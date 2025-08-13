@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: crudapp
+  namespace: final-assigment
 spec:
   replicas: 1
   selector:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
       - name: crudapp
-        image: ghcr.io/anpt1992/crudapp:latest
+        image: ghcr.io/anpt1992/crudapp:1.0.0
         ports:
         - containerPort: 8080
         env:
@@ -30,6 +31,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: crudapp
+  namespace: final-assigment
 spec:
   type: NodePort
   selector:
