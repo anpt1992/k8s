@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+
 using Microsoft.EntityFrameworkCore;
+using ProductInventoryApi.Entities;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,10 +10,23 @@ builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(9090);
 });
-builder.Services.AddDbContext<ProductDb>(opt => opt.UseInMemoryDatabase("ProductInventory"));
+builder.Services.AddDbContext<ProductDb>(opt =>
+    opt.UseNpgsql(
+        builder.Configuration.GetValue<string>("POSTGRES_CONNECTION_STRING") ??
+        builder.Configuration.GetConnectionString("DefaultConnection") ??
+        Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING") ??
+        throw new InvalidOperationException("No PostgreSQL connection string found")
+    ));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
+
+// Apply migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ProductDb>();
+    db.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -37,17 +52,3 @@ app.MapDelete("/products/{id}", async (int id, ProductDb db) => {
 });
 
 app.Run();
-
-class Product
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public decimal Price { get; set; }
-    public int Quantity { get; set; }
-}
-
-class ProductDb : DbContext
-{
-    public ProductDb(DbContextOptions<ProductDb> options) : base(options) { }
-    public DbSet<Product> Products => Set<Product>();
-}
