@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: product-inventory-api
-        image: ghcr.io/anpt1992/product-inventory-api:v1.0.1
+        image: ghcr.io/anpt1992/product-inventory-api:v1.0.2
         ports:
         - containerPort: 8080
         env:
@@ -26,3 +26,10 @@ spec:
             secretKeyRef:
               name: postgres-connection
               key: POSTGRES_CONNECTION_STRING
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

@@ -43,12 +43,18 @@ app.MapPut("/products/{id}", async (int id, Product inputProduct, ProductDb db) 
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
-app.MapDelete("/products/{id}", async (int id, ProductDb db) => {
+app.MapDelete("/products/{id}", async (int id, ProductDb db) =>
+{
     var product = await db.Products.FindAsync(id);
     if (product is null) return Results.NotFound();
     db.Products.Remove(product);
     await db.SaveChangesAsync();
     return Results.NoContent();
+});
+app.MapGet("/cpu-burn", () => {
+    // Calculate Fibonacci(35) as a CPU-intensive task
+    int Fib(int n) => n <= 1 ? n : Fib(n - 1) + Fib(n - 2);
+    return Fib(35);
 });
 
 app.Run();

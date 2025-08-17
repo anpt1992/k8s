@@ -16,4 +16,6 @@ kubectl apply -f product-inventory-api/deployment.yaml
 kubectl apply -f product-inventory-api/service.yaml
 kubectl apply -f product-inventory-api/ingress.yaml
 
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
 kubectl get all
