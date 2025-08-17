@@ -5,6 +5,11 @@ metadata:
   namespace: final-assigment
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: product-inventory-api
@@ -15,7 +20,7 @@ spec:
     spec:
       containers:
       - name: product-inventory-api
-        image: ghcr.io/anpt1992/product-inventory-api:v1.0.2
+        image: ghcr.io/anpt1992/product-inventory-api:v1.1.1
         ports:
         - containerPort: 8080
         env:
@@ -33,3 +38,22 @@ spec:
           limits:
             memory: 400Mi
             cpu: "1"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 12

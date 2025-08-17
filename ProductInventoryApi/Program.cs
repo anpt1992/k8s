@@ -31,6 +31,9 @@ using (var scope = app.Services.CreateScope())
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Health check endpoint for Kubernetes probes
+app.MapGet("/healthz", () => Results.Ok("Healthy test"));
+
 app.MapGet("/products", async (ProductDb db) => await db.Products.ToListAsync());
 app.MapGet("/products/{id}", async (int id, ProductDb db) => await db.Products.FindAsync(id) is Product p ? Results.Ok(p) : Results.NotFound());
 app.MapPost("/products", async (Product product, ProductDb db) => { db.Products.Add(product); await db.SaveChangesAsync(); return Results.Created($"/products/{product.Id}", product); });
