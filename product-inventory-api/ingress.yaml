@@ -15,4 +15,4 @@ spec:
               service:
                 name: product-inventory-api
                 port:
-                  number: 9090
+                  number: 8080

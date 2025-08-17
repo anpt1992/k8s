@@ -8,7 +8,7 @@ using ProductInventoryApi.Entities;
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(9090);
+    options.ListenAnyIP(8080);
 });
 builder.Services.AddDbContext<ProductDb>(opt =>
     opt.UseNpgsql(
