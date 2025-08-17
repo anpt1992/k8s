@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product-inventory-api
+  name: product-inventory-api-canary
   namespace: final-assigment
 spec:
-  replicas: 2
+  replicas: 0
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -13,14 +13,16 @@ spec:
   selector:
     matchLabels:
       app: product-inventory-api
+      canary: "true"
   template:
     metadata:
       labels:
         app: product-inventory-api
+        canary: "true"
     spec:
       containers:
       - name: product-inventory-api
-        image: ghcr.io/anpt1992/product-inventory-api:v1.1.0
+        image: ghcr.io/anpt1992/product-inventory-api:v1.1.1
         ports:
         - containerPort: 8080
         env:
