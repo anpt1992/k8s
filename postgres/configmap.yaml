@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: final-assigment
+data:
+  POSTGRES_DB: productdb
