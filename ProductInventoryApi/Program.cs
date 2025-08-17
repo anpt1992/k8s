@@ -52,9 +52,17 @@ app.MapDelete("/products/{id}", async (int id, ProductDb db) =>
     return Results.NoContent();
 });
 app.MapGet("/cpu-burn", () => {
-    // Calculate Fibonacci(35) as a CPU-intensive task
+    // CPU and memory intensive task
     int Fib(int n) => n <= 1 ? n : Fib(n - 1) + Fib(n - 2);
-    return Fib(35);
+    // Allocate a large array to consume memory
+    int size = 100_000_000; // ~400MB for int[]
+    int[]? memoryHog = new int[size];
+    for (int i = 0; i < size; i += 100_000) memoryHog[i] = i;
+    int result = Fib(35);
+    // Release memory by nulling the array and forcing GC
+    memoryHog = null;
+    GC.Collect();
+    return result;
 });
 
 app.Run();

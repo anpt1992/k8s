@@ -22,10 +22,10 @@ spec:
       name: memory
       target:
         type: Utilization
-        averageUtilization: 70
+        averageUtilization: 80
   behavior:
     scaleUp:
-      stabilizationWindowSeconds: 60
+      stabilizationWindowSeconds: 20
       policies:
       - type: Percent
         value: 100
@@ -34,7 +34,7 @@ spec:
         value: 4
         periodSeconds: 15
     scaleDown:
-      stabilizationWindowSeconds: 0
+      stabilizationWindowSeconds: 20
       policies:
       - type: Percent
         value: 100
