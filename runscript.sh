@@ -2,7 +2,7 @@
 set -e
 
 NAMESPACE=final-assigment
-SERVICE_ACCOUNT=devops-sa
+SERVICE_ACCOUNT=anpt-sa
 CLUSTER_NAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')
 CLUSTER_SERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
 
@@ -10,7 +10,10 @@ kubectl config use-context minikube
 
 kubectl get namespace "$NAMESPACE" >/dev/null 2>&1 || kubectl create namespace "$NAMESPACE"
 
-kubectl create serviceaccount $SERVICE_ACCOUNT -n $NAMESPACE
+# Check if the service account exists before creating
+if ! kubectl get serviceaccount "$SERVICE_ACCOUNT" -n "$NAMESPACE" >/dev/null 2>&1; then
+	kubectl create serviceaccount "$SERVICE_ACCOUNT" -n "$NAMESPACE"
+fi
 
 kubectl apply -f rbac-anpt-sa.yaml
 
@@ -31,7 +34,5 @@ kubectl config set-context --current --namespace "$NAMESPACE"
 kubectl apply -f postgres/
 
 kubectl apply -f product-inventory-api/
-
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
 kubectl get all

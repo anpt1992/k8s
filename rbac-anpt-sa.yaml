@@ -1,7 +1,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: pv-admin
+  name: demo-cluster-role
+  namespace: final-assigment
 rules:
 - apiGroups: [""]
   resources: ["persistentvolumes"]
@@ -10,45 +11,51 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: pv-admin-binding
+  name: demo-cluster-role-binding
 subjects:
 - kind: ServiceAccount
   name: anpt-sa
   namespace: final-assigment
 roleRef:
   kind: ClusterRole
-  name: pv-admin
+  name: demo-cluster-role
   apiGroup: rbac.authorization.k8s.io
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: deployment-admin
+  name: demo-role
   namespace: final-assigment
 rules:
 - apiGroups: [""] # core resources
-  resources: ["pods", "services", "persistentvolumeclaims", "persistentvolumes", "configmaps", "secrets"]
-  verbs: ["get", "list", "create", "update", "delete", "watch"]
+  resources: ["pods", "services", "persistentvolumeclaims", "persistentvolumes", "configmaps", "secrets", "replicationcontrollers"]
+  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 - apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["get", "list", "create", "update", "delete", "watch"]
+  resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 - apiGroups: ["autoscaling"]
   resources: ["horizontalpodautoscalers"]
-  verbs: ["get", "list", "create", "update", "delete", "watch"]
+  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 - apiGroups: ["networking.k8s.io"]
   resources: ["ingresses"]
-  verbs: ["get", "list", "create", "update", "delete", "watch"]
+  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"]
+  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"]
+  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: deployment-admin-binding
+  name: demo-role-binding
   namespace: final-assigment
 subjects:
 - kind: ServiceAccount
   name: anpt-sa
 roleRef:
   kind: Role
-  name: deployment-admin
+  name: demo-role
   apiGroup: rbac.authorization.k8s.io
