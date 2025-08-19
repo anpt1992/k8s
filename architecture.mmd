@@ -1,0 +1,27 @@
+architecture-beta
+    group k8s(cloud)[Kubernetes Cluster]
+    group db-group(database)[PostgreSQL] in k8s
+    group api-group(server)[Product Inventory API] in k8s
+
+    service pv(disk)[PersistentVolume] in db-group
+    service pvc(disk)[PersistentVolumeClaim] in db-group
+    service config(config)[ConfigMap] in db-group
+    service secret(key)[Secret] in db-group
+    service db(database)[Postgres Pod] in db-group
+    service dbsvc(server)[Postgres Service] in db-group
+
+    service api(api)[API Pod] in api-group
+    service apisvc(server)[API Service] in api-group
+    service ingress(cloud)[Ingress] in api-group
+    service hpa(cloud)[HPA] in api-group
+
+    pv:R -- L:pvc
+    pvc:R -- L:db
+    config:T -- B:db
+    secret:T -- B:db
+    db:R -- L:dbsvc
+    dbsvc:R -- L:api
+    secret:T -- B:api
+    api:R -- L:apisvc
+    apisvc:R -- L:ingress
+    api:T -- B:hpa
