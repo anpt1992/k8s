@@ -1,0 +1,8 @@
+resources:
+  - deployment.yaml
+  - deployment-canary.yaml
+  - hpa.yaml
+  - ingress.yaml
+  - ingress-canary.yaml
+  - service.yaml
+  - service-canary.yaml

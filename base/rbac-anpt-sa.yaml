@@ -29,7 +29,7 @@ metadata:
   namespace: final-assigment
 rules:
 - apiGroups: [""] # core resources
-  resources: ["pods", "services", "persistentvolumeclaims", "persistentvolumes", "configmaps", "secrets", "replicationcontrollers"]
+  resources: ["pods", "pods/log", "services", "persistentvolumeclaims", "persistentvolumes", "configmaps", "secrets", "replicationcontrollers"]
   verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 - apiGroups: ["apps"]
   resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
@@ -38,7 +38,7 @@ rules:
   resources: ["horizontalpodautoscalers"]
   verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 - apiGroups: ["networking.k8s.io"]
-  resources: ["ingresses"]
+  resources: ["ingresses", "networkpolicies"]
   verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 - apiGroups: ["batch"]
   resources: ["jobs", "cronjobs"]

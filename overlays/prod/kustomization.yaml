@@ -1,0 +1,9 @@
+resources:
+  - ../../base
+  - allow-all-internal.yaml
+patches:
+  - path: patch-replicas.yaml
+  - path: patch-ingress.yaml
+  - path: patch-ingress-canary.yaml
+
+  - path: patch-pvc-storageclass.yaml

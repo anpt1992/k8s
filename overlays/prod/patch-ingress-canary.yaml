@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: product-inventory-api-canary
+  namespace: final-assigment
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api-assigment.anpt1992.dev
+      secretName: cloudflare-origin-cert
+  rules:
+    - host: api-assigment.anpt1992.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: product-inventory-api-canary
+                port:
+                  number: 8080

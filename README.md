@@ -1,5 +1,12 @@
 # Product Inventory API
 
+## Ingress troubleshooting commands
+
+```bash
+curl -k https://api-assigment.anpt1992.dev/healthz
+kubectl exec -n final-assigment busybox-debug -- wget -qO- http://product-inventory-api:8080/healthz
+```
+
 ## Stress Testing with wrk
 
 To stress test the API using [wrk](https://github.com/wg/wrk):
