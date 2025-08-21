@@ -5,7 +5,7 @@ metadata:
   namespace: final-assigment
 rules:
 - apiGroups: [""]
-  resources: ["persistentvolumes"]
+  resources: ["pods"]
   verbs: ["get", "list", "create", "update", "delete", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -20,7 +20,6 @@ roleRef:
   kind: ClusterRole
   name: demo-cluster-role
   apiGroup: rbac.authorization.k8s.io
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -28,23 +27,8 @@ metadata:
   name: demo-role
   namespace: final-assigment
 rules:
-- apiGroups: [""] # core resources
-  resources: ["pods", "pods/log", "services", "persistentvolumeclaims", "persistentvolumes", "configmaps", "secrets", "replicationcontrollers"]
-  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
-- apiGroups: ["apps"]
-  resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
-  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
-- apiGroups: ["autoscaling"]
-  resources: ["horizontalpodautoscalers"]
-  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
-- apiGroups: ["networking.k8s.io"]
-  resources: ["ingresses", "networkpolicies"]
-  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
-- apiGroups: ["batch"]
-  resources: ["jobs", "cronjobs"]
-  verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
-- apiGroups: ["batch"]
-  resources: ["jobs", "cronjobs"]
+- apiGroups: [""]
+  resources: ["pods"]
   verbs: ["get", "list", "create", "update", "patch", "delete", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

@@ -1,4 +1,3 @@
 resources:
   - ../postgres
   - ../product-inventory-api
-  - rbac-anpt-sa.yaml
