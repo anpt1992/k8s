@@ -17,7 +17,7 @@ kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -
 echo "[INFO] ensuring serviceaccount $SA in $NAMESPACE"
 kubectl create sa "$SA" -n "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
 
-kubectl apply -f rbac/rbac-anpt-sa.yaml
+kubectl apply -f rbac-anpt-sa.yaml
 
 echo "[INFO] creating token for $SA"
 TOKEN=$(kubectl create token "$SA" -n "$NAMESPACE")
