@@ -1,6 +1,7 @@
 resources:
   - ../../base
   - allow-all-internal.yaml
+  - ingress-grafana-prometheus.yaml
 patches:
   - path: patch-replicas.yaml
   - path: patch-ingress.yaml
