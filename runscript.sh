@@ -94,7 +94,7 @@ if [[ "$ENV" == "prod" ]]; then
   # Ensure the monitoring namespace TLS secret is always up-to-date after Helm install
   if [[ -d cert && -f cert/origin.crt && -f cert/origin.key ]]; then
     kubectl create secret tls cloudflare-origin-cert --cert=cert/origin.crt --key=cert/origin.key -n monitoring --dry-run=client -o yaml | kubectl apply -f -
-  fi
+  else
     echo "[INFO] Skipping TLS secret creation: cert/origin.crt or cert/origin.key not found."
   fi
 fi
