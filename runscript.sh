@@ -12,18 +12,6 @@ kubectl config set-context --current --namespace "$NAMESPACE"
 
 # Apply all manifests using Kustomize overlay
 
-# Helper: detect if a CNI is already installed (calico/cilium/flannel/weave/canal)
-detect_cni() {
-  # return 0 if any known CNI daemonset or pod is present
-  if kubectl get daemonsets -n kube-system -o name 2>/dev/null | grep -E 'calico|cilium|flannel|weave|canal|kube-flannel' >/dev/null 2>&1; then
-    return 0
-  fi
-  if kubectl get pods -n kube-system -o name 2>/dev/null | grep -E 'calico|cilium|flannel|weave|canal|kube-flannel' >/dev/null 2>&1; then
-    return 0
-  fi
-  return 1
-}
-
 # --- PROD-ONLY SETUP ---
 if [[ "$ENV" == "prod" ]]; then
   echo "[INFO] Running prod-only setup: Ingress controller, MetalLB, StorageClass, etc."
@@ -39,23 +27,13 @@ if [[ "$ENV" == "prod" ]]; then
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/cloud/deploy.yaml
   fi
 
-  # Install metrics-server if not present
-  if ! kubectl get deployment metrics-server -n kube-system >/dev/null 2>&1; then
-    echo "[INFO] Installing metrics-server..."
-    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-  else
-    echo "[INFO] metrics-server already installed"
-  fi
-
-  # Install Calico CNI if no other CNI is detected
-  if ! detect_cni; then
-    echo "[INFO] No CNI detected. Installing Calico CNI..."
-    kubectl apply -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
-    kubectl apply -f https://docs.projectcalico.org/manifests/custom-resources.yaml
-  else
-    echo "[INFO] CNI detected in cluster; skipping Calico installation."
-  fi
-
+  # # Install metrics-server if not present
+  # if ! kubectl get deployment metrics-server -n kube-system >/dev/null 2>&1; then
+  #   echo "[INFO] Installing metrics-server..."
+  #   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  # else
+  #   echo "[INFO] metrics-server already installed"
+  # fi  
   # Install StorageClass if not present (example for local-path)
   if ! kubectl get storageclass local-path >/dev/null 2>&1; then
     echo "[INFO] Installing local-path StorageClass..."
@@ -64,11 +42,11 @@ if [[ "$ENV" == "prod" ]]; then
   
   # Ensure the TLS secret is created from the latest cert files before applying manifests in prod, but only if cert folder and files exist
 
-  if [[ -d cert && -f cert/origin.crt && -f cert/origin.key ]]; then
-    kubectl create secret tls cloudflare-origin-cert --cert=cert/origin.crt --key=cert/origin.key -n "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
-  else
-    echo "[INFO] Skipping TLS secret creation: cert/origin.crt or cert/origin.key not found."
-  fi
+  # if [[ -d cert && -f cert/origin.crt && -f cert/origin.key ]]; then
+  #   kubectl create secret tls cloudflare-origin-cert --cert=cert/origin.crt --key=cert/origin.key -n "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
+  # else
+  #   echo "[INFO] Skipping TLS secret creation: cert/origin.crt or cert/origin.key not found."
+  # fi
 
   # --- Monitoring stack: Prometheus, Grafana, Node Exporter, Kube API, PG Exporter ---
   echo "[INFO] Setting up monitoring stack (Prometheus, Grafana, exporters) via Helm..."
