@@ -1,7 +1,6 @@
 resources:
   - ../../base
   - allow-all-internal.yaml
-  - ingress-grafana-prometheus.yaml
   - metallb-config.yaml
 patches:
   - path: patch-replicas.yaml

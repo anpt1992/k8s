@@ -1,0 +1,10 @@
+grafana:
+  smtp:
+    enabled: true
+    host: "mailhog.monitoring.svc.cluster.local:1025"
+    user: ""
+    password: ""
+    skipVerify: true
+    fromAddress: "grafana@example.local"
+    fromName: "Grafana"
+    ehloIdentity: "grafana.local"

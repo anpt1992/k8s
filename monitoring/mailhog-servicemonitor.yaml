@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mailhog-servicemonitor
+  namespace: monitoring
+  labels:
+    app: mailhog
+spec:
+  selector:
+    matchLabels:
+      app: mailhog
+  endpoints:
+    - port: http
+      path: /
+      interval: 30s
+  namespaceSelector:
+    matchNames:
+      - monitoring
