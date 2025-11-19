@@ -30,6 +30,11 @@ if ! kubectl get storageclass local-path >/dev/null 2>&1; then
 fi
 
 # Ensure the TLS secret is created from the latest cert files before applying manifests in prod, but only if cert folder and files exist
+if [[ -d cert && -f cert/origin.crt && -f cert/origin.key ]]; then
+  kubectl create secret tls cloudflare-origin-cert --cert=cert/origin.crt --key=cert/origin.key -n "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
+else
+  echo "[INFO] Skipping TLS secret creation: cert/origin.crt or cert/origin.key not found."
+fi
 
 
 
