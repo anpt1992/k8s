@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 31,
+  "id": 30,
   "links": [
     {
       "asDropdown": true,
@@ -75,6 +75,7 @@
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
+            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -94,7 +95,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "red",
@@ -129,15 +130,17 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=~\"$cluster\"}) by (namespace)",
+          "editorMode": "code",
+          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"\"}) by (namespace)",
           "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -193,7 +196,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "red",
@@ -229,7 +232,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -294,7 +297,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "red",
@@ -350,7 +353,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -406,7 +409,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "yellow",
@@ -516,7 +519,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -689,7 +692,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "red",
@@ -725,7 +728,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -788,8 +791,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": 0
+                "color": "green"
               },
               {
                 "color": "red",
@@ -825,7 +827,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -888,8 +890,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": 0
+                "color": "green"
               },
               {
                 "color": "red",
@@ -925,7 +926,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -988,8 +989,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": 0
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1025,7 +1025,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1063,6 +1063,39 @@
           "color": {
             "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -1070,8 +1103,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": 0
+                "color": "red"
               },
               {
                 "color": "red",
@@ -1100,6 +1132,9 @@
       "id": 31,
       "options": {
         "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
           "showLegend": false
         },
         "tooltip": {
@@ -1108,7 +1143,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1133,6 +1168,39 @@
           "color": {
             "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -1140,8 +1208,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": 0
+                "color": "red"
               },
               {
                 "color": "red",
@@ -1170,10 +1237,10 @@
       "id": 32,
       "options": {
         "legend": {
+          "calcs": [],
           "displayMode": "list",
-          "showLegend": true,
           "placement": "bottom",
-          "calcs": []
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -1181,7 +1248,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1204,36 +1271,49 @@
       "description": "Binary deployment availability >=99% replicas available. 1=Up, 0=Down, null=N/A.",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
           "mappings": [
             {
-              "type": "value",
               "options": {
                 "0": {
-                  "text": "Down",
-                  "color": "#e74c3c"
+                  "color": "#e74c3c",
+                  "text": "Down"
                 },
                 "1": {
-                  "text": "Up",
-                  "color": "#2ecc71"
+                  "color": "#2ecc71",
+                  "text": "Up"
                 }
-              }
+              },
+              "type": "value"
             },
             {
-              "type": "special",
               "options": {
                 "null": {
-                  "text": "N/A",
-                  "color": "#6b7280"
+                  "color": "#6b7280",
+                  "text": "N/A"
                 }
-              }
+              },
+              "type": "special"
             }
           ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "#6b7280",
-                "value": null
+                "color": "#6b7280"
               }
             ]
           }
@@ -1248,19 +1328,22 @@
       },
       "id": 33,
       "options": {
+        "alignValue": "left",
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "mergeValues": true,
         "rowHeight": 0.9,
         "showValue": "never",
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1273,13 +1356,12 @@
         }
       ],
       "title": "Namespace Deployment Availability (State)",
-      "transformations": [],
       "type": "state-timeline"
     }
   ],
   "preload": false,
   "refresh": "10s",
-  "schemaVersion": 41,
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
@@ -1299,14 +1381,13 @@
       {
         "allValue": ".*",
         "current": {
-          "text": "All",
-          "value": ".*"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "hide": 0,
         "label": "Cluster",
         "name": "cluster",
         "options": [],
@@ -1338,7 +1419,8 @@
   },
   "timepicker": {},
   "timezone": "utc",
-  "title": "Kubernetes / New Dashboard",
-  "uid": "fc5ca184-88ee-4071-9663-e39105b16192",
-  "version": 5
+  "title": "Kubernetes / New Dashboard Copy",
+  "uid": "af4thh682q29sb",
+  "version": 1,
+  "weekStart": ""
 }
