@@ -1,0 +1,29 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: eg-gateway
+  namespace: envoy-gateway-system
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+    - name: https
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cloudflare-origin-cert
+            namespace: final-assigment # Gateway can reference secrets in other namespaces if ReferenceGrant allows, or we put secret in same ns.
+            # For simplicity, Envoy Gateway often expects secret in same namespace or uses ReferenceGrant.
+            # Let's assume we'll copy the secret to envoy-gateway-system or use ReferenceGrant.
+            # Actually, let's put the Gateway in the application namespace for now to simplify secret access?
+            # Or better, let's put Gateway in `envoy-gateway-system` and use ReferenceGrant if needed.
+            # BUT, `runscript.sh` creates secret in `final-assigment` and `monitoring`.
+            # To make it easy, let's define the Gateway in `final-assigment` so it can access the secret there easily.
+            # Wait, if we have multiple namespaces (monitoring), a single Gateway in one namespace is better.
+            # Let's put Gateway in `envoy-gateway-system`. We will need to ensure the secret is available there.
+            # I will update runscript.sh to create the secret in `envoy-gateway-system` as well.
