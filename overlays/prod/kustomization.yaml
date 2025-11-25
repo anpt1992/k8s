@@ -1,5 +1,5 @@
 resources:
-  - ../../base
+  - ../../infrastructure/gateway
   - allow-all-internal.yaml
   - metallb-config.yaml
 patches:

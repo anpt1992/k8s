@@ -35,17 +35,17 @@ if ! kubectl get storageclass local-path >/dev/null 2>&1; then
 fi
 
 # Create TLS secret if certs exist
-if [[ -d cert && -f cert/origin.crt && -f cert/origin.key ]]; then
+if [[ -d ../cert && -f ../cert/origin.crt && -f ../cert/origin.key ]]; then
   # Create secret in application namespace
-  kubectl create secret tls cloudflare-origin-cert --cert=cert/origin.crt --key=cert/origin.key -n "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
+  kubectl create secret tls cloudflare-origin-cert --cert=../cert/origin.crt --key=../cert/origin.key -n "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
   # Create secret in envoy-gateway-system namespace (for Gateway)
-  kubectl create secret tls cloudflare-origin-cert --cert=cert/origin.crt --key=cert/origin.key -n envoy-gateway-system --dry-run=client -o yaml | kubectl apply -f -
+  kubectl create secret tls cloudflare-origin-cert --cert=../cert/origin.crt --key=../cert/origin.key -n envoy-gateway-system --dry-run=client -o yaml | kubectl apply -f -
 else
-  echo "[INFO] Skipping TLS secret creation: cert/origin.crt or cert/origin.key not found."
+  echo "[INFO] Skipping TLS secret creation: ../cert/origin.crt or ../cert/origin.key not found."
 fi
 
 # Apply Gateway resource
-kubectl apply -f base/gateway.yaml
+kubectl apply -f ../infrastructure/gateway/gateway.yaml
 
 
 
@@ -64,27 +64,27 @@ helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
   --namespace monitoring --create-namespace \
   --set grafana.ingress.enabled=false \
   --set prometheus.ingress.enabled=false \
-  -f monitoring/grafana-smtp-values.yaml
+  -f ../infrastructure/monitoring/grafana-smtp-values.yaml
 # Install PG Exporter
 helm upgrade --install prometheus-postgres-exporter prometheus-community/prometheus-postgres-exporter --version 7.3.0 --namespace monitoring --create-namespace
 echo "[INFO] Waiting for Grafana pod to be ready..."
 kubectl wait --for=condition=Ready pod -l app.kubernetes.io/name=grafana -n monitoring --timeout=180s || true
 # Install MailHog
-kubectl apply -f monitoring/mailhog.yaml -n monitoring
-kubectl apply -f monitoring/httproute-monitoring.yaml -n monitoring
+kubectl apply -f ../infrastructure/monitoring/mailhog.yaml -n monitoring
+kubectl apply -f ../infrastructure/monitoring/httproute-monitoring.yaml -n monitoring
 echo "[INFO] MailHog deployed in namespace 'monitoring'"
 echo "[INFO] Grafana admin password:"
 kubectl get secret prometheus-grafana -n monitoring -o jsonpath="{.data.admin-password}" | base64 --decode; echo
 
 # Create monitoring TLS secret
-if [[ -d cert && -f cert/origin.crt && -f cert/origin.key ]]; then
-  kubectl create secret tls cloudflare-origin-cert --cert=cert/origin.crt --key=cert/origin.key -n monitoring --dry-run=client -o yaml | kubectl apply -f -
+if [[ -d ../cert && -f ../cert/origin.crt && -f ../cert/origin.key ]]; then
+  kubectl create secret tls cloudflare-origin-cert --cert=../cert/origin.crt --key=../cert/origin.key -n monitoring --dry-run=client -o yaml | kubectl apply -f -
 else
   echo "[INFO] Skipping TLS secret creation: cert/origin.crt or cert/origin.key not found."
 fi
 
 
 # Apply the correct overlay for the environment
-kubectl apply -k overlays/prod
+kubectl apply -k ../overlays/prod
 
 kubectl get all
